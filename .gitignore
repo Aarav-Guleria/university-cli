@@ -2,6 +2,8 @@ bin/
 *.exe
 *.out
 
+*.swp
+
 .vscode/
 
 .idea/
@@ -9,3 +11,5 @@ bin/
 .DS_Store
 
 note.txt
+
+university.json

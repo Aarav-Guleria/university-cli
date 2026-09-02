@@ -8,5 +8,5 @@ type ValidationError struct {
 }
 
 func (e *ValidationError) Error() string {
-	return fmt.Sprintf("validation failed on %s: message: %s", e.Field, e.Msg)
+	return fmt.Sprintf("validation failed on %s: %s", e.Field, e.Msg)
 }

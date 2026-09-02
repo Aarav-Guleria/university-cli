@@ -1,21 +1,23 @@
 package main
 
 import (
-	"bufio"
 	"fmt"
-	"os"
 
-	"example.com/university-clitwo/university"
+	"github.com/Aarav-Guleria/UniversityCLI/university"
 )
 
-const dataFile = "university.json"
-
-var reader = bufio.NewReader(os.Stdin)
-
 func main() {
-	stud, err := university.NewStudent(1, "aarav", 21, "IT", 99)
+	student, err := university.NewStudent(1, "Aarav", 21, "IT", 98)
 	if err != nil {
-		return &university.ValidationError{Field: "name"}
+		fmt.Println("error creating student:", err)
+		return
 	}
-	fmt.Println(stud)
+	fmt.Println(student)
+
+	teacher, err := university.NewTeacher(1, "Dr. Rathore", 45, "IT", 120000)
+	if err != nil {
+		fmt.Println("error creating teacher:", err)
+		return
+	}
+	fmt.Println(teacher)
 }
