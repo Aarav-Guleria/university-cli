@@ -1,0 +1,11 @@
+bin/
+*.exe
+*.out
+
+.vscode/
+
+.idea/
+
+.DS_Store
+
+note.txt
