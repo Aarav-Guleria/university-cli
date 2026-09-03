@@ -25,7 +25,6 @@ func main() {
 	if err != nil {
 		fmt.Println("error creating course", err)
 	}
-	// check
 	fmt.Println(course)
 
 	if err := course.AddStudent(student); err != nil {
