@@ -20,4 +20,22 @@ func main() {
 		return
 	}
 	fmt.Println(teacher)
+
+	course, err := university.NewCousre("G01", "GoLang", teacher)
+	if err != nil {
+		fmt.Println("error creating course", err)
+	}
+	// check
+	fmt.Println(course)
+
+	if err := course.AddStudent(student); err != nil {
+		fmt.Println("error enrolling student:", err)
+		return
+	}
+	fmt.Println("\nCourse:", course.Name)
+	fmt.Println("Teacher:", course.Teacher.Name)
+	fmt.Println("Enrolled:")
+	for _, s := range course.Students {
+		fmt.Println(" :-", s.Name)
+	}
 }
