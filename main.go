@@ -7,34 +7,47 @@ import (
 )
 
 func main() {
-	student, err := university.NewStudent(1, "Aarav", 21, "IT", 98)
+	db := university.NewUniversityDB()
+
+	student, err := university.NewStudent(0, "Aarav", 21, "IT", 98)
 	if err != nil {
 		fmt.Println("error creating student:", err)
 		return
 	}
-	fmt.Println(student)
+	db.AddStudent(student)
 
-	teacher, err := university.NewTeacher(1, "Dr. Rathore", 45, "IT", 120000)
+	teacher, err := university.NewTeacher(0, "Dr. Rathore", 45, "IT", 120000)
 	if err != nil {
 		fmt.Println("error creating teacher:", err)
 		return
 	}
-	fmt.Println(teacher)
+	db.AddTeacher(teacher)
 
-	course, err := university.NewCousre("G01", "GoLang", teacher)
+	course, err := university.NewCourse("G101", "GoLang", teacher)
 	if err != nil {
-		fmt.Println("error creating course", err)
+		fmt.Println("error creating course:", err)
+		return
 	}
 	fmt.Println(course)
+	db.AddCoures(course)
 
 	if err := course.AddStudent(student); err != nil {
 		fmt.Println("error enrolling student:", err)
 		return
 	}
-	fmt.Println("\nCourse:", course.Name)
-	fmt.Println("Teacher:", course.Teacher.Name)
-	fmt.Println("Enrolled:")
-	for _, s := range course.Students {
-		fmt.Println(" :-", s.Name)
+
+	found, ok := db.FindStudent(student.ID)
+	if !ok {
+		fmt.Println("student not found in db")
+		return
+	} else {
+		fmt.Println("Found via DB:", found)
+		fmt.Println()
+		fmt.Println("Assigned student ID:", student.ID)
+		fmt.Println("Student Name:", student.Name)
+		fmt.Println()
+		fmt.Println("Assigned teacher ID:", teacher.ID)
+		fmt.Println("Teacher Name:", teacher.Name)
+		fmt.Println()
 	}
 }

@@ -10,7 +10,7 @@ type Course struct {
 	Teacher  *Teacher
 }
 
-func NewCousre(code string, name string, teacher *Teacher) (*Course, error) {
+func NewCourse(code string, name string, teacher *Teacher) (*Course, error) {
 	if code == "" {
 		return nil, &ValidationError{Field: "code", Msg: "cannot be empty"}
 	}
