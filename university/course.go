@@ -3,11 +3,11 @@ package university
 import "errors"
 
 type Course struct {
-	Code string
-	Name string
+	Code string `json:"code"`
+	Name string `json:"name"`
 
-	Students []*Student
-	Teacher  *Teacher
+	Students []*Student `json:"-"`
+	Teacher  *Teacher   `json:"-"`
 }
 
 func NewCourse(code string, name string, teacher *Teacher) (*Course, error) {

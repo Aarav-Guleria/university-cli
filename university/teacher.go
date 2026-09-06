@@ -4,8 +4,8 @@ import "fmt"
 
 type Teacher struct {
 	Person
-	Department string
-	Salary     int
+	Department string `json:"department"`
+	Salary     int    `json:"salary"`
 }
 
 func NewTeacher(id int, name string, age int, department string, salary int) (*Teacher, error) {

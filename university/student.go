@@ -8,9 +8,9 @@ type Member interface {
 }
 
 type Person struct {
-	ID   int
-	Name string
-	Age  int
+	ID   int    `json:"id"`
+	Name string `json:"name"`
+	Age  int    `json:"age"`
 }
 
 func (p Person) GetName() string {
@@ -19,8 +19,8 @@ func (p Person) GetName() string {
 
 type Student struct {
 	Person
-	Branch string
-	Marks  int
+	Branch string `json:"branch"`
+	Marks  int    `json:"marks"`
 }
 
 func NewStudent(id int, name string, age int, branch string, marks int) (*Student, error) {
