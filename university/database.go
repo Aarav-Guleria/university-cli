@@ -23,7 +23,7 @@ type DublicateIDError struct {
 	ID int
 }
 
-func (e DublicateIDError) Error() string {
+func (e *DublicateIDError) Error() string {
 	return fmt.Sprintf("ID %d already exists", e.ID)
 }
 
@@ -57,7 +57,7 @@ func (db *UniversityDB) AddTeacher(teacher *Teacher) error {
 	return nil
 }
 
-func (db *UniversityDB) AddCoures(course *Course) {
+func (db *UniversityDB) AddCourse(course *Course) {
 	db.Courses[course.Code] = course
 }
 
@@ -69,6 +69,11 @@ func (db *UniversityDB) FindStudent(id int) (*Student, bool) {
 func (db *UniversityDB) FindTeacher(id int) (*Teacher, bool) {
 	teacher, ok := db.Teachers[id]
 	return teacher, ok
+}
+
+func (db *UniversityDB) FindCourse(code string) (*Course, bool) {
+	course, ok := db.Courses[code]
+	return course, ok
 }
 
 func (db *UniversityDB) RemoveStudent(id int) {
