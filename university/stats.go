@@ -4,7 +4,7 @@ import (
 	"slices"
 )
 
-func (db UniversityDB) AverageMarks() float64 {
+func (db *UniversityDB) AverageMarks() float64 {
 	if len(db.Students) == 0 {
 		return 0
 	}

@@ -19,11 +19,11 @@ func NewUniversityDB() *UniversityDB {
 	}
 }
 
-type DublicateIDError struct {
+type DuplicateIDError struct {
 	ID int
 }
 
-func (e *DublicateIDError) Error() string {
+func (e *DuplicateIDError) Error() string {
 	return fmt.Sprintf("ID %d already exists", e.ID)
 }
 
@@ -38,7 +38,7 @@ func (db *UniversityDB) AddStudent(student *Student) error {
 		student.ID = db.generateID()
 	} else {
 		if _, existing := db.Students[student.ID]; existing {
-			return &DublicateIDError{ID: student.ID}
+			return &DuplicateIDError{ID: student.ID}
 		}
 	}
 	db.Students[student.ID] = student
@@ -50,7 +50,7 @@ func (db *UniversityDB) AddTeacher(teacher *Teacher) error {
 		teacher.ID = db.generateID()
 	} else {
 		if _, existing := db.Teachers[teacher.ID]; existing {
-			return &DublicateIDError{ID: teacher.ID}
+			return &DuplicateIDError{ID: teacher.ID}
 		}
 	}
 	db.Teachers[teacher.ID] = teacher
