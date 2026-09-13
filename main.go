@@ -206,7 +206,6 @@ func updateMarks(db *university.UniversityDB) {
 	id := readInt("Student ID: ")
 
 	student, ok := db.FindStudent(id)
-
 	if !ok {
 		fmt.Println("Student not found.")
 		return
@@ -217,6 +216,7 @@ func updateMarks(db *university.UniversityDB) {
 	err := student.UpdateMarks(newMarks)
 	if err != nil {
 		fmt.Println("Error:", err)
+		return
 	}
 
 	fmt.Println("Marks updated successfully")
@@ -278,10 +278,6 @@ func showStatistics(db *university.UniversityDB) {
 	fmt.Println("\nStudents per branch:")
 
 	counts := db.StudentsByBranchCount()
-
-	for branch, count := range counts {
-		fmt.Printf("%s: %d\n", branch, count)
-	}
 
 	for branch, count := range counts {
 		fmt.Printf("%s: %d\n", branch, count)
@@ -361,6 +357,7 @@ func enrollStudent(db *university.UniversityDB) {
 	err := course.AddStudent(student)
 	if err != nil {
 		fmt.Println("Error: ", err)
+		return
 	}
 
 	fmt.Println("Student enrolled successfully")
