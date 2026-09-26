@@ -1,7 +1,5 @@
 package university
 
-import "errors"
-
 type Course struct {
 	Code string `json:"code"`
 	Name string `json:"name"`
@@ -29,12 +27,12 @@ func NewCourse(code string, name string, teacher *Teacher) (*Course, error) {
 
 func (c *Course) AddStudent(student *Student) error {
 	if student == nil {
-		return errors.New("student cannot be nil")
+		return ErrStudentNil
 	}
 
 	for _, existing := range c.Students {
 		if existing.ID == student.ID {
-			return errors.New("student is already added")
+			return ErrStudentEnrolled
 		}
 	}
 
@@ -49,5 +47,5 @@ func (c *Course) RemoveStudent(studentID int) error {
 			return nil
 		}
 	}
-	return errors.New("student is not enrolled")
+	return ErrStudentNotEnrolled
 }

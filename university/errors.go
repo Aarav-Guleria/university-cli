@@ -1,6 +1,15 @@
 package university
 
-import "fmt"
+import (
+	"errors"
+	"fmt"
+)
+
+var (
+	ErrStudentNil         = errors.New("student cannot be nil")
+	ErrStudentEnrolled    = errors.New("student is already enrolled")
+	ErrStudentNotEnrolled = errors.New("student is not enrolled")
+)
 
 type ValidationError struct {
 	Field string

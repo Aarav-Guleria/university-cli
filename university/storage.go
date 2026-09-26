@@ -2,6 +2,7 @@ package university
 
 import (
 	"encoding/json"
+	"fmt"
 	"os"
 )
 
@@ -77,21 +78,25 @@ func (db *UniversityDB) Save(filename string) error {
 
 	data, err := json.MarshalIndent(file, "", " ")
 	if err != nil {
-		return err
+		return fmt.Errorf("encode database: %w", err)
 	}
 
-	return os.WriteFile(filename, data, 0o644)
+	if err := os.WriteFile(filename, data, 0o644); err != nil {
+		return fmt.Errorf("write database file %q %w", filename, err)
+	}
+
+	return nil
 }
 
 func Load(filename string) (*UniversityDB, error) {
 	data, err := os.ReadFile(filename)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("read database file %q: %w", filename, err)
 	}
 	var file databaseFile
 
 	if err := json.Unmarshal(data, &file); err != nil {
-		return nil, err
+		return nil, fmt.Errorf("decode database file %q: %w", filename, err)
 	}
 
 	db := NewUniversityDB()

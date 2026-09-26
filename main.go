@@ -2,6 +2,7 @@ package main
 
 import (
 	"bufio"
+	"errors"
 	"fmt"
 	"os"
 	"strconv"
@@ -18,8 +19,13 @@ func main() {
 	db, err := university.Load(dataFile)
 
 	if err != nil {
-		db = university.NewUniversityDB()
-		fmt.Println("Starting with a new database.")
+		if errors.Is(err, os.ErrNotExist) {
+			db = university.NewUniversityDB()
+			fmt.Println("No database found. Starting with a new database.")
+		} else {
+			fmt.Println("Failed to load database:", err)
+			return
+		}
 	} else {
 		fmt.Println("Loaded database from", dataFile)
 	}
@@ -127,11 +133,24 @@ func addStudent(db *university.UniversityDB) {
 		marks,
 	)
 	if err != nil {
+		var validationErr *university.ValidationError
+
+		if errors.As(err, &validationErr) {
+			fmt.Printf("Invalid %s: %s\n", validationErr.Field, validationErr.Msg)
+			return
+		}
+
 		fmt.Println("Error:", err)
-		return
 	}
 	err = db.AddStudent(student)
 	if err != nil {
+		var duplicateErr *university.DuplicateIDError
+
+		if errors.As(err, &duplicateErr) {
+			fmt.Printf("Could not add student: ID %d already exists\n", duplicateErr.ID)
+			return
+		}
+		fmt.Println("Error:", err)
 		return
 	}
 
@@ -341,6 +360,7 @@ func enrollStudent(db *university.UniversityDB) {
 	fmt.Println("=====ENROLL STUDENT=====")
 
 	courseCode := readString("Course code: ")
+
 	course, ok := db.FindCourse(courseCode)
 	if !ok {
 		fmt.Println("Course not found")
@@ -348,6 +368,7 @@ func enrollStudent(db *university.UniversityDB) {
 	}
 
 	studentID := readInt("Student ID: ")
+
 	student, ok := db.FindStudent(studentID)
 	if !ok {
 		fmt.Println("Student not found")
@@ -356,7 +377,16 @@ func enrollStudent(db *university.UniversityDB) {
 
 	err := course.AddStudent(student)
 	if err != nil {
-		fmt.Println("Error: ", err)
+		switch {
+		case errors.Is(err, university.ErrStudentEnrolled):
+			fmt.Println("Student is already enrolled in this course.")
+
+		case errors.Is(err, university.ErrStudentNil):
+			fmt.Println("Cannot enroll a nil student", err)
+
+		default:
+			fmt.Println("Failed to enroll student:", err)
+		}
 		return
 	}
 
