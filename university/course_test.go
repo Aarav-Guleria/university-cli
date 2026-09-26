@@ -1,6 +1,9 @@
 package university
 
-import "testing"
+import (
+	"errors"
+	"testing"
+)
 
 func TestAddStudent(t *testing.T) {
 	student := &Student{
@@ -22,14 +25,24 @@ func TestAddStudent(t *testing.T) {
 
 	err = course.AddStudent(student)
 
-	if err == nil {
-		t.Fatal("expected duplicate enrollment to fail")
+	if !errors.Is(err, ErrStudentEnrolled) {
+		t.Fatalf("expected ErrStudentEnrolled, got %v", err)
 	}
 
 	if len(course.Students) != 1 {
-		t.Fatalf(
-			"expected 1 student, got %d",
-			len(course.Students),
-		)
+		t.Fatalf("expected 1 student, got %d", len(course.Students))
+	}
+}
+
+func TestAddNilStudent(t *testing.T) {
+	course := &Course{
+		Code: "G101",
+		Name: "GoLang",
+	}
+
+	err := course.AddStudent(nil)
+
+	if !errors.Is(err, ErrStudentNil) {
+		t.Fatalf("expected ErrStudentNil, got %v", err)
 	}
 }

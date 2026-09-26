@@ -141,6 +141,7 @@ func addStudent(db *university.UniversityDB) {
 		}
 
 		fmt.Println("Error:", err)
+		return
 	}
 	err = db.AddStudent(student)
 	if err != nil {

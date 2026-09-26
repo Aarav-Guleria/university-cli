@@ -67,7 +67,7 @@ func (s *Student) Grade() string {
 }
 
 func (s *Student) UpdateMarks(newMarks int) error {
-	if newMarks <= 0 || newMarks >= 100 {
+	if newMarks < 0 || newMarks > 100 {
 		return &ValidationError{Field: "marks", Msg: "invalid marks"}
 	}
 

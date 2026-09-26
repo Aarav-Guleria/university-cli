@@ -1,6 +1,9 @@
 package university
 
-import "testing"
+import (
+	"errors"
+	"testing"
+)
 
 func TestGrade(t *testing.T) {
 	tests := []struct {
@@ -52,5 +55,15 @@ func TestUpdateMarks(t *testing.T) {
 	err = student.UpdateMarks(150)
 	if err == nil {
 		t.Fatal("expected invalid marks to return an error")
+	}
+
+	var validationErr *ValidationError
+
+	if !errors.As(err, &validationErr) {
+		t.Fatal("expected ValidationError")
+	}
+
+	if validationErr.Field != "marks" {
+		t.Fatalf("expected field to be marks, got %s", validationErr.Field)
 	}
 }

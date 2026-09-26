@@ -82,7 +82,7 @@ func (db *UniversityDB) Save(filename string) error {
 	}
 
 	if err := os.WriteFile(filename, data, 0o644); err != nil {
-		return fmt.Errorf("write database file %q %w", filename, err)
+		return fmt.Errorf("write database file %q: %w", filename, err)
 	}
 
 	return nil
