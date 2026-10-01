@@ -27,12 +27,14 @@ go.mod
 
 university/
 course.go
-test.go
+course_test.go
 database.go
+database_test.go
 errors.go
 search.go
 stats.go
 storage.go
+storage_test.go
 student.go
 student_test.go
 teacher.go

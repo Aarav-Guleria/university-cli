@@ -320,6 +320,15 @@ func addTeacher(db *university.UniversityDB) {
 
 	err = db.AddTeacher(teacher)
 	if err != nil {
+		var duplicateErr *university.DuplicateIDError
+
+		if errors.As(err, &duplicateErr) {
+			fmt.Printf(
+				"Could not add teacher: ID %d already exists\n", duplicateErr.ID)
+			return
+		}
+
+		fmt.Println("Error:", err)
 		return
 	}
 
