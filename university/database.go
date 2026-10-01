@@ -57,8 +57,14 @@ func (db *UniversityDB) AddTeacher(teacher *Teacher) error {
 	return nil
 }
 
-func (db *UniversityDB) AddCourse(course *Course) {
+func (db *UniversityDB) AddCourse(course *Course) error {
+	if _, exists := db.Courses[course.Code]; exists {
+		return &DuplicateCourseError{
+			Code: course.Code,
+		}
+	}
 	db.Courses[course.Code] = course
+	return nil
 }
 
 func (db *UniversityDB) FindStudent(id int) (*Student, bool) {
@@ -78,6 +84,10 @@ func (db *UniversityDB) FindCourse(code string) (*Course, bool) {
 
 func (db *UniversityDB) RemoveStudent(id int) {
 	delete(db.Students, id)
+
+	for _, course := range db.Courses {
+		_ = course.RemoveStudent(id)
+	}
 }
 
 func (db *UniversityDB) RemoveTeacher(id int) {

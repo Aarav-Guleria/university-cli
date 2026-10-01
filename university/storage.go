@@ -76,6 +76,8 @@ func (db *UniversityDB) Save(filename string) error {
 		file.Courses = append(file.Courses, cf)
 	}
 
+	file.NextID = db.nextID
+
 	data, err := json.MarshalIndent(file, "", " ")
 	if err != nil {
 		return fmt.Errorf("encode database: %w", err)
@@ -128,6 +130,24 @@ func Load(filename string) (*UniversityDB, error) {
 			Salary:     saved.Salary,
 		}
 		db.Teachers[teacher.ID] = teacher
+	}
+
+	if db.nextID < 1 {
+		for id := range db.Students {
+			if id >= db.nextID {
+				db.nextID = id + 1
+			}
+		}
+
+		for id := range db.Teachers {
+			if id >= db.nextID {
+				db.nextID = id + 1
+			}
+		}
+
+		if db.nextID < 1 {
+			db.nextID = 1
+		}
 	}
 
 	for _, saved := range file.Courses {

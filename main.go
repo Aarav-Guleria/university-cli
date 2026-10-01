@@ -353,7 +353,20 @@ func addCourse(db *university.UniversityDB) {
 		fmt.Println("Error:", err)
 		return
 	}
-	db.AddCourse(course)
+
+	err = db.AddCourse(course)
+	if err != nil {
+		var duplicateErr *university.DuplicateCourseError
+
+		if errors.As(err, &duplicateErr) {
+			fmt.Printf("Could not add course: %s already exists\n", duplicateErr.Code)
+			return
+		}
+
+		fmt.Println("Error:", err)
+		return
+	}
+
 	fmt.Println("Course added successfully")
 }
 

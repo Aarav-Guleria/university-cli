@@ -46,3 +46,19 @@ func TestAddNilStudent(t *testing.T) {
 		t.Fatalf("expected ErrStudentNil, got %v", err)
 	}
 }
+
+func TestRemoveStudentNotEnrolled(t *testing.T) {
+	course := &Course{
+		Code: "G101",
+		Name: "GoLang",
+	}
+
+	err := course.RemoveStudent(123)
+
+	if !errors.Is(err, ErrStudentNotEnrolled) {
+		t.Fatalf(
+			"expected ErrStudentNotEnrolled, got %v",
+			err,
+		)
+	}
+}

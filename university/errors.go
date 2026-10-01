@@ -19,3 +19,11 @@ type ValidationError struct {
 func (e *ValidationError) Error() string {
 	return fmt.Sprintf("validation failed on %s: %s", e.Field, e.Msg)
 }
+
+type DuplicateCourseError struct {
+	Code string
+}
+
+func (e *DuplicateCourseError) Error() string {
+	return fmt.Sprintf("course %s already exists", e.Code)
+}
